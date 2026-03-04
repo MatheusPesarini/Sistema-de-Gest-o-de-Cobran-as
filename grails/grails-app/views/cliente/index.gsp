@@ -16,7 +16,7 @@
                         </a>
                     </li>
                     <li class="nav-item me-lg-auto">
-                        <g:link class="nav-link btn btn-primary btn-sm text-white" action="create">
+                        <g:link class="btn btn-primary btn-sm" action="create">
                             <i class="bi-person-plus"></i> Novo Cliente
                         </g:link>
                     </li>

@@ -10,8 +10,7 @@ import java.text.SimpleDateFormat
 @Transactional
 class AsaasIntegrationService {
 
-    @Value('${asaas.apiKey}')
-    private String apiKey    
+    private final String apiKey = System.getenv("ASAAS_API_KEY") ?: ""
     private static final String BASE_URL = 'https://sandbox.asaas.com/api/v3'
 
     Map criarClienteNoAsaas(Cliente cliente) {
@@ -67,11 +66,17 @@ class AsaasIntegrationService {
         def code = connection.responseCode
         def stream = (code >= 200 && code < 300) ? connection.inputStream : connection.errorStream
 
-        if (!stream) {
-            return [statusCode: code, data: null]
-        }
-        
+//        if (!stream) {
+//            println "🚨 [ASAAS API] Retornou sem corpo. StatusCode: ${code}"
+//            return [statusCode: code, data: null]
+//        }
+
         def json = new JsonSlurper().parse(stream, "UTF-8")
+
+        // --- ADICIONE ESTAS DUAS LINHAS AQUI ---
+        println "👉 [ASAAS API] Código HTTP retornado: ${code}"
+        println "👉 [ASAAS API] Resposta do Asaas: ${json}"
+        // ----------------------------------------
         return [statusCode: code, data: json]
     }
 }
