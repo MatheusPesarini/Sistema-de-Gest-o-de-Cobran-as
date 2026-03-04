@@ -5,6 +5,8 @@ import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import org.springframework.beans.factory.annotation.Value
 
+import java.text.SimpleDateFormat
+
 @Transactional
 class AsaasIntegrationService {
 
@@ -23,12 +25,14 @@ class AsaasIntegrationService {
     }
 
     Map criarCobrancaNoAsaas(Cobranca cobranca) {
-        def format = cobranca.dataVencimento.format("yyyy-MM-dd")
+        def formatador = new SimpleDateFormat("yyyy-MM-dd")
+        def dataFormatada = formatador.format(cobranca.dataVencimento)        
+        
         def payload = [
             customer   : cobranca.cliente.asaasId,
             billingType: "BOLETO",
             value      : cobranca.valor,
-            dueDate    : format,
+            dueDate    : dataFormatada,
             description: cobranca.descricao ?: ""
         ]
         return post("/payments", payload)

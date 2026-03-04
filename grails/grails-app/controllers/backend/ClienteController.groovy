@@ -1,5 +1,8 @@
 package backend
 
+import grails.gorm.transactions.Transactional
+
+@Transactional
 class ClienteController {
 
     AsaasIntegrationService asaasIntegrationService
