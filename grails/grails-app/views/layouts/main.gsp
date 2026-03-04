@@ -6,6 +6,7 @@
     <title><g:layoutTitle default="Grails"/></title>
     <asset:link rel="icon" href="favicon.ico" type="image/x-ico"/>
     <asset:stylesheet src="application.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
     <g:layoutHead/>
 </head>
 
@@ -16,6 +17,28 @@
         <a class="navbar-brand d-flex align-items-center" href="${request.contextPath}/">
             <asset:image class="w-75" src="grails.svg" alt="Grails Logo"/>
         </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <g:link controller="dashboard" action="index" class="nav-link">
+                        <i class="bi-speedometer2"></i> Dashboard
+                    </g:link>
+                </li>
+                <li class="nav-item">
+                    <g:link controller="cliente" action="index" class="nav-link">
+                        <i class="bi-people"></i> Clientes
+                    </g:link>
+                </li>
+                <li class="nav-item">
+                    <g:link controller="cobranca" action="index" class="nav-link">
+                        <i class="bi-receipt"></i> Cobranças
+                    </g:link>
+                </li>
+            </ul>
+        </div>
     </div>
 </nav>
 
