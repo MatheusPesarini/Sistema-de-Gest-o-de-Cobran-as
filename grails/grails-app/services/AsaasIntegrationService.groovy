@@ -3,17 +3,19 @@ package backend
 import grails.gorm.transactions.Transactional
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
+import org.springframework.beans.factory.annotation.Value
 
 @Transactional
 class AsaasIntegrationService {
 
-    private static final String API_KEY = ""
+    @Value('${asaas.apiKey}')
+    private String apiKey    
     private static final String BASE_URL = 'https://sandbox.asaas.com/api/v3'
 
     Map criarClienteNoAsaas(Cliente cliente) {
         def payload = [
             name       : cliente.nome,
-            cpfCnpj    : cliente.cpfCnpj,
+            cpfCnpj    : cliente.cpfCnpj?.replaceAll("[^0-9]", ""),
             email      : cliente.email,
             mobilePhone: cliente.telefone
         ]
@@ -41,7 +43,8 @@ class AsaasIntegrationService {
         def connection = url.openConnection() as HttpURLConnection
         connection.requestMethod = "POST"
         connection.setRequestProperty("Content-Type", "application/json")
-        connection.setRequestProperty("access_token", API_KEY)
+        connection.setRequestProperty("access_token", apiKey)
+        connection.setRequestProperty("User-Agent", "MiniAsaas/1.0")
         connection.doOutput = true
         connection.outputStream.withWriter("UTF-8") { it << JsonOutput.toJson(body) }
         return parseResponse(connection)
@@ -51,13 +54,19 @@ class AsaasIntegrationService {
         def url = new URL("${BASE_URL}${path}")
         def connection = url.openConnection() as HttpURLConnection
         connection.requestMethod = "GET"
-        connection.setRequestProperty("access_token", API_KEY)
+        connection.setRequestProperty("access_token", apiKey)
+        connection.setRequestProperty("User-Agent", "MiniAsaas/1.0")
         return parseResponse(connection)
     }
 
     private Map parseResponse(HttpURLConnection connection) {
         def code = connection.responseCode
         def stream = (code >= 200 && code < 300) ? connection.inputStream : connection.errorStream
+
+        if (!stream) {
+            return [statusCode: code, data: null]
+        }
+        
         def json = new JsonSlurper().parse(stream, "UTF-8")
         return [statusCode: code, data: json]
     }
