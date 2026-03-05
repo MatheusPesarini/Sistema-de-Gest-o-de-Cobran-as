@@ -34,9 +34,39 @@
                 </li>
                 <li class="nav-item">
                     <g:link controller="cobranca" action="index" class="nav-link">
-                        <i class="bi-receipt"></i> Cobrancas
+                        <i class="bi-receipt"></i> Cobranças
                     </g:link>
                 </li>
+                <li class="nav-item">
+                    <g:link controller="webhook" action="index" class="nav-link">
+                        <i class="bi-broadcast"></i> Webhook
+                    </g:link>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-3">
+                <sec:ifLoggedIn>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle"></i>
+                            <sec:username/>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" href="${request.contextPath}/logoff">
+                                    <i class="bi bi-box-arrow-right"></i> Sair
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </sec:ifLoggedIn>
+                <sec:ifNotLoggedIn>
+                    <li class="nav-item">
+                        <g:link controller="login" action="auth" class="nav-link">
+                            <i class="bi bi-box-arrow-in-right"></i> Login
+                        </g:link>
+                    </li>
+                </sec:ifNotLoggedIn>
             </ul>
         </div>
     </div>

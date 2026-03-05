@@ -15,7 +15,7 @@ class Cobranca {
         valor nullable: false, min: 0.01G
         dataVencimento nullable: false
         descricao nullable: true
-        status inList: ["PENDENTE", "PAGA", "CANCELADA"]
+        status inList: ["PENDENTE", "PAGA", "CANCELADA", "VENCIDA"]
         asaasId nullable: true, unique: true
         invoiceUrl nullable: true
     }
